@@ -6,15 +6,24 @@
 using namespace std;
 
 int xRectangulo = 0, yRectangulo = 0;
-
 Color c = ROJO;
+
+
+void dibujar()
+{    
+    dibujarRectangulo(10 + xRectangulo,100 + yRectangulo,300+xRectangulo,365 + yRectangulo, c);
+    c.verde = (c.verde + 5) % 256;
+    c.azul = (c.azul + 7) % 256;
+}
+
+// Las siguientes funciones son las que espera el "framework"
+
 
 void ejecutarAlIniciarElPrograma()
 {
     // Aca se escribe el codigo que se ejecuta siempre al momento que comienza el programa
-    dibujarRectangulo(10 + xRectangulo,100 + yRectangulo,300+xRectangulo,365 + yRectangulo, c);
-    c.verde = (c.verde + 5) % 256;
-    c.azul = (c.azul + 7) % 256;
+    dibujar();
+    escribirTexto(10,2, "Finalmente podemos escribir", AMARILLO);
 }
 
 void procesarCargaDeTextoEnCuadro(int numeroDeCuadroDeTexto, string texto)
@@ -45,7 +54,7 @@ void procesarPulsacionDeTecla(char tecla)
         for (double alpha = 0.0; alpha < 2 * M_PI; alpha += 0.1, k ^= 1)
             dibujarLinea(250 ,250,250 * (1 + cos(alpha)) ,250 * (1 + sin(alpha)), AZUL, 1 + k);
     }
-    ejecutarAlIniciarElPrograma();
+    dibujar();
 }
 
 void procesarClic(int X, int Y)

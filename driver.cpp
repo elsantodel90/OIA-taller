@@ -3,6 +3,7 @@
 #include <cassert>
 #include <cstring>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 #include "opciones.h"
 #include "funcionesDeBiblioteca.h"
 
@@ -17,6 +18,7 @@ void procesarClic(int X, int Y);
 SDL_Surface* screen = NULL;
 SDL_Surface* canvas = NULL;
 SDL_Window* gWindow = NULL;
+TTF_Font *font = NULL;
 
 void ejecutarElLoopPrincipal()
 {
@@ -44,23 +46,30 @@ void ejecutarElLoopPrincipal()
 
 int main()
 {
-    //Start SDL
+    //Iniciar SDL
     SDL_Init( SDL_INIT_EVERYTHING ); 
+    TTF_Init();
     
-    //Set up screen
+    
+    //Preparar la ventana
     gWindow = SDL_CreateWindow( TITULO_PROGRAMA.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 
                                                          RESOLUCION_HORIZONTAL, RESOLUCION_VERTICAL, SDL_WINDOW_SHOWN );
     screen = SDL_GetWindowSurface( gWindow );
     canvas = SDL_CreateRGBSurface(0, RESOLUCION_HORIZONTAL, RESOLUCION_VERTICAL, 32, 0,0,0,0);
     
-    // Driver start
+    // Cargar la fuente
+    
+    font = TTF_OpenFont("open-sans.ttf", 24);
+    cout << TTF_GetError() << endl;
+    // Comienza nuestro driver!
     cout << "El driver ha comenzado." << endl;
     ejecutarAlIniciarElPrograma();
     ejecutarElLoopPrincipal();
     
-    //Quit SDL
+    //Terminar SDL
     SDL_FreeSurface( canvas );
     SDL_DestroyWindow( gWindow );
+    TTF_Quit();
     SDL_Quit(); 
     return 0;
 }

@@ -3,6 +3,7 @@
 
 #include <string>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 
 using namespace std;
 
@@ -23,7 +24,7 @@ const Color NEGRO     = {0  , 0  , 0  };
 void dibujarRectangulo(int x1, int y1, int x2, int y2, Color color);
 void dibujarLinea(int x1, int y1, int x2, int y2, Color color, int grosor = 1);
 void dibujarCirculo(int centroX, int centroY, int radio, Color color);
-void escribirTexto(int x,int y, string texto);
+void escribirTexto(int x,int y, string texto, Color color);
 
 void actualizarPantalla();
 

@@ -5,7 +5,7 @@
 
 extern SDL_Surface* canvas;
 
-Uint32 colorEnFormatoSDL(Color color)
+Uint32 colorEnFormatoPixel(Color color)
 {
     return SDL_MapRGB(canvas->format, color.rojo, color.verde, color.azul);
     
@@ -18,7 +18,7 @@ void dibujarRectangulo(int x1, int y1, int x2, int y2, Color color)
     r.y = y1;
     r.w = x2-x1;
     r.h = y2-y1;
-    SDL_FillRect(canvas, &r, colorEnFormatoSDL(color));
+    SDL_FillRect(canvas, &r, colorEnFormatoPixel(color));
 }
 
 const int MAX_RES = max(RESOLUCION_HORIZONTAL, RESOLUCION_VERTICAL);
@@ -37,7 +37,7 @@ void dibujarLinea(int x1, int y1, int x2, int y2, Color color, int grosor)
 
 void dibujarCirculo(int centroX, int centroY, int radio, Color color)
 {
-    Uint32 colorSDL = colorEnFormatoSDL(color);
+    Uint32 colorSDL = colorEnFormatoPixel(color);
     SDL_LockSurface(canvas);
     assert(canvas->pitch % 4 == 0);
     assert(sizeof(Uint32) == 4);
@@ -59,9 +59,31 @@ void dibujarCirculo(int centroX, int centroY, int radio, Color color)
     SDL_UnlockSurface(canvas);
 }
 
-void escribirTexto(int x,int y, string texto)
+extern TTF_Font *font;
+
+SDL_Color colorEnFormatoSDL(Color color)
 {
-    throw "Todavia no implemente esta operacion" + string(x,' ') + string(y,' ') + texto;
+    SDL_Color sdlColor;
+    sdlColor.r = color.rojo;
+    sdlColor.g = color.verde;
+    sdlColor.b = color.azul;
+    return sdlColor;
+}
+
+#include <iostream>
+
+void escribirTexto(int x,int y, string texto, Color color)
+{
+    cout << font << endl;
+    SDL_Surface *text = TTF_RenderUTF8_Blended (font, texto.c_str(), colorEnFormatoSDL(color));
+    cout << TTF_GetError() << endl;
+    SDL_Rect dstRect;
+    dstRect.x = x;
+    dstRect.y = y;
+    dstRect.w = text->w;
+    dstRect.h = text->h;
+    SDL_BlitSurface(text, NULL, canvas, &dstRect);
+    SDL_FreeSurface(text);
 }
 
 
