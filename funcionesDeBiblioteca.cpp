@@ -1,3 +1,4 @@
+#include <cassert>
 #include <SDL2/SDL.h>
 #include "funcionesDeBiblioteca.h"
 
@@ -18,6 +19,40 @@ void dibujarRectangulo(int x1, int y1, int x2, int y2, Color color)
     r.h = y2-y1;
     SDL_FillRect(canvas, &r, colorEnFormatoSDL(color));
 }
+
+//void dibujarLinea(int x1, int y1, int x2, int y2, Color color, int grosor)
+//{
+//}
+
+void dibujarCirculo(int centroX, int centroY, int radio, Color color)
+{
+    Uint32 colorSDL = colorEnFormatoSDL(color);
+    SDL_LockSurface(canvas);
+    assert(canvas->pitch % 4 == 0);
+    assert(sizeof(Uint32) == 4);
+    const int STEP = canvas->pitch / 4;
+    Uint32 *pixels = static_cast<Uint32*>(canvas->pixels);
+    pixels += STEP * (centroY - radio);
+    pixels += centroX;
+    for (int y = -radio; y <= radio; y++)
+    {
+        if (0 <= centroY + y && centroY + y < canvas->h)
+        {
+            for (int x = -radio; x <= radio; x++)
+            if (0 <= centroX + x && centroX + x < canvas->w &&
+                          x*x+y*y < radio*radio)
+                pixels[x] = colorSDL;
+        }
+        pixels += STEP;
+    }
+    SDL_UnlockSurface(canvas);
+}
+
+void escribirTexto(int x,int y, string texto)
+{
+    
+}
+
 
 extern SDL_Surface* screen;
 extern SDL_Window* gWindow;

@@ -46,5 +46,5 @@ void procesarClic(int X, int Y)
 {
     // Aca se escribe el codigo que se ejecuta cuando se hace un clic en (X,Y)
     cout << "Se hace clic en (" << X << "," << Y << ")" << endl;
-    dibujarRectangulo(X-7,Y-7,X+7,Y+7, CIAN);
+    dibujarCirculo(X,Y,12, CIAN);
 }

@@ -1,7 +1,10 @@
 #ifndef FUNCIONES_DE_BIBLIOTECA_H
 #define FUNCIONES_DE_BIBLIOTECA_H
 
+#include <string>
 #include <SDL2/SDL.h>
+
+using namespace std;
 
 struct Color
 {
@@ -18,6 +21,9 @@ const Color BLANCO    = {255, 255, 255};
 const Color NEGRO     = {0  , 0  , 0  };
 
 void dibujarRectangulo(int x1, int y1, int x2, int y2, Color color);
+void dibujarLinea(int x1, int y1, int x2, int y2, Color color, int grosor = 1);
+void dibujarCirculo(int centroX, int centroY, int radio, Color color);
+void escribirTexto(int x,int y, string texto);
 
 void actualizarPantalla();
 
