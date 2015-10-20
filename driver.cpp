@@ -30,9 +30,13 @@ void ejecutarElLoopPrincipal()
             case SDL_QUIT:
                 return;
                 break;
-            case SDL_TEXTINPUT: // Se puede usar SDL_KEYDOWN para dar acceso a las flechitas, pero esto es probablemente mas simple.
+            case SDL_TEXTINPUT: // Se puede usar SDL_KEYDOWN para dar acceso a las flechitas y no distinguir mayusculas, etc, pero esto es probablemente mas simple.
                 assert(strlen(evento.text.text) == 1);
                 procesarPulsacionDeTecla(evento.text.text[0]);
+                break;
+            case SDL_MOUSEBUTTONDOWN:
+                if (evento.button.clicks == 1)
+                    procesarClic(evento.button.x, evento.button.y);
                 break;
         }
     }
@@ -52,8 +56,6 @@ int main()
     // Driver start
     cout << "El driver ha comenzado." << endl;
     ejecutarAlIniciarElPrograma();
-    procesarClic(10,15);
-    
     ejecutarElLoopPrincipal();
     
     //Quit SDL
