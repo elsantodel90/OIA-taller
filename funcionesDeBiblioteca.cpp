@@ -1,5 +1,6 @@
 #include <cassert>
 #include <SDL2/SDL.h>
+#include "opciones.h"
 #include "funcionesDeBiblioteca.h"
 
 extern SDL_Surface* canvas;
@@ -20,9 +21,19 @@ void dibujarRectangulo(int x1, int y1, int x2, int y2, Color color)
     SDL_FillRect(canvas, &r, colorEnFormatoSDL(color));
 }
 
-//void dibujarLinea(int x1, int y1, int x2, int y2, Color color, int grosor)
-//{
-//}
+const int MAX_RES = max(RESOLUCION_HORIZONTAL, RESOLUCION_VERTICAL);
+
+void dibujarLinea(int x1, int y1, int x2, int y2, Color color, int grosor)
+{
+    int deltaX = x2 - x1;
+    int deltaY = y2 - y1;
+    for (int k = 0; k<=MAX_RES ; k++ )
+    {
+        int x = (deltaX * k) / MAX_RES;
+        int y = (deltaY * k) / MAX_RES;
+        dibujarCirculo(x1 + x,y1 + y,grosor, color);
+    }
+}
 
 void dibujarCirculo(int centroX, int centroY, int radio, Color color)
 {
@@ -50,7 +61,7 @@ void dibujarCirculo(int centroX, int centroY, int radio, Color color)
 
 void escribirTexto(int x,int y, string texto)
 {
-    
+    throw "Todavia no implemente esta operacion" + string(x,' ') + string(y,' ') + texto;
 }
 
 

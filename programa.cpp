@@ -39,6 +39,12 @@ void procesarPulsacionDeTecla(char tecla)
     if (tecla == 'w') yRectangulo -= SPEED;
     if (tecla == 's') yRectangulo += SPEED;
     if (tecla == 'c') dibujarRectangulo(0 ,0,RESOLUCION_HORIZONTAL,RESOLUCION_VERTICAL, NEGRO);
+    if (tecla == 'l')
+    {
+        int k = 0;
+        for (double alpha = 0.0; alpha < 2 * M_PI; alpha += 0.1, k ^= 1)
+            dibujarLinea(250 ,250,250 * (1 + cos(alpha)) ,250 * (1 + sin(alpha)), AZUL, 1 + k);
+    }
     ejecutarAlIniciarElPrograma();
 }
 
