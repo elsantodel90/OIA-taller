@@ -2,14 +2,13 @@
 #include <string>
 #include <sstream>
 #include <cassert>
-#include "opciones.h"
+#include <cmath>
 #include "funcionesDeBiblioteca.h"
 
 using namespace std;
 
 int xRectangulo = 0, yRectangulo = 0;
 Color c = ROJO;
-
 
 void dibujar()
 {    
@@ -19,6 +18,11 @@ void dibujar()
 }
 
 // Las siguientes funciones son las que espera el "framework"
+
+extern const int RESOLUCION_HORIZONTAL = 500;
+extern const int RESOLUCION_VERTICAL = 500;
+extern const int TAMANIO_TEXTO = 12;
+extern const string TITULO_PROGRAMA = "Programa OIA";
 
 int numeroDelBotonUno = -1, numeroDelBotonDos = -1;
 int numeroDelCuadroUno = -1, numeroDelCuadroDos = -1;
