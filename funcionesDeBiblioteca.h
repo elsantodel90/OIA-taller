@@ -18,6 +18,7 @@ const Color AMARILLO        = {255, 255, 0  };
 const Color MAGENTA         = {255, 0  , 255};
 const Color BLANCO          = {255, 255, 255};
 const Color GRIS_CLARO      = {170, 170, 170};
+const Color GRIS            = {128, 128, 128};
 const Color GRIS_OSCURO     = {85 , 85 , 85 };
 const Color GRIS_MUY_OSCURO = {35 , 35 , 35 };
 const Color NEGRO           = {0  , 0  , 0  };
