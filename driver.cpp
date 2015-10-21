@@ -5,7 +5,6 @@
 #include <cstring>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
-#include "opciones.h"
 #include "funcionesDeBiblioteca.h"
 
 using namespace std;
@@ -102,6 +101,9 @@ vector<Boton> botones;
 vector<CuadroDeTexto> cuadrosDeTexto;
 
 int proximoNumeroDeControl = 0;
+
+extern const int RESOLUCION_HORIZONTAL;
+extern const int RESOLUCION_VERTICAL;
 
 template <typename T>
 void eliminarControlPorNumero(vector<T> &v, int numeroDeControl, string mensajeDeError)
@@ -264,6 +266,10 @@ void ejecutarElLoopPrincipal()
         }
     }
 }
+
+extern const int TAMANIO_TEXTO;
+extern const string TITULO_PROGRAMA;
+
 
 int main()
 {

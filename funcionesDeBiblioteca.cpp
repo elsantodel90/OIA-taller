@@ -1,7 +1,7 @@
 #include <vector>
 #include <cassert>
 #include <SDL2/SDL.h>
-#include "opciones.h"
+#include <SDL2/SDL_ttf.h>
 #include "funcionesDeBiblioteca.h"
 
 Uint32 colorEnFormatoPixel(Color color, SDL_Surface *superficie)
@@ -23,6 +23,7 @@ void dibujarCirculoEnSuperficie(int centroX, int centroY, int radio, Color color
 {
     Uint32 colorSDL = colorEnFormatoPixel(color, superficie);
     SDL_LockSurface(superficie);
+    assert(superficie->format->BytesPerPixel == 4);
     assert(superficie->pitch % 4 == 0);
     assert(sizeof(Uint32) == 4);
     const int STEP = superficie->pitch / 4;
@@ -42,6 +43,9 @@ void dibujarCirculoEnSuperficie(int centroX, int centroY, int radio, Color color
     }
     SDL_UnlockSurface(superficie);
 }
+
+extern const int RESOLUCION_HORIZONTAL;
+extern const int RESOLUCION_VERTICAL;
 
 const int MAX_RES = max(RESOLUCION_HORIZONTAL, RESOLUCION_VERTICAL);
 
