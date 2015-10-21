@@ -1,4 +1,10 @@
 # OIA-taller
+## Ejecución de ejemplos
+
+La carpeta "ejemplos" contiene algunos ejemplos de programas que se pueden realizar con este framework sencillo. Como solamente se debe modificar el archivo "programa.cpp" para generar un programa, cada ejemplo corresponde a un archivo de código fuente "programa.cpp" distinto.
+
+Para compilar uno de ellos, basta con reemplazar el "programa.cpp" del directorio principal (que inicialmente contiene únicamente un esqueleto con las funciones que el framework espera que el usuario implemente) con el .cpp del ejemplo correspondiente.
+
 ## Instalación en ubuntu
 
 * Clonar el repo
