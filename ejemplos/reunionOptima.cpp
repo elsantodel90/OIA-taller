@@ -18,6 +18,7 @@ extern const int RESOLUCION_HORIZONTAL = 2 * (LADO_MANZANA + MEDIA_CALLE) + (ANC
 extern const int RESOLUCION_VERTICAL =  2 * (LADO_MANZANA + MEDIA_CALLE) + (ALTO - 2) * ANCHO_BLOQUE + ALTO_BARRA_INFERIOR;
 extern const int TAMANIO_TEXTO = 12;
 extern const string TITULO_PROGRAMA = "Optimizador de reunion";
+extern const int MILISEGUNDOS_RELOJ = 1000;
 
 const Color COLOR_BARRA_INFERIOR = GRIS;
 
@@ -142,4 +143,9 @@ void procesarClic(int X, int Y)
             actualizarDibujoEsquina(i, j);
         }
     }
+}
+
+void tickDelReloj()
+{
+    // Aca se escribe el codigo que se ejecuta periodicamente cada MILISEGUNDOS_RELOJ milisegundos.
 }
