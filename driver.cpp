@@ -14,6 +14,7 @@ void procesarCargaDeTextoEnCuadro(int numeroDeCuadroDeTexto, string texto);
 void procesarClicEnBoton(int numeroDeBoton);
 void procesarPulsacionDeTecla(char tecla);
 void procesarClic(int X, int Y);
+void tickDelReloj();
 
 SDL_Surface* screen = NULL;
 SDL_Surface* canvas = NULL;
@@ -185,8 +186,27 @@ void finDeCargaDeTexto()
     }
 }
 
+Uint32 timerCallback(Uint32 interval, void*)
+{
+    // Create a user event to call the game loop.
+    SDL_Event event;
+    
+    event.type = SDL_USEREVENT;
+    event.user.type = SDL_USEREVENT;
+    event.user.code = 1;
+    event.user.data1 = 0;
+    event.user.data2 = 0;
+    
+    SDL_PushEvent(&event);
+    
+    return interval;
+}
+
+extern const int MILISEGUNDOS_RELOJ;
+
 void ejecutarElLoopPrincipal()
 {
+    SDL_AddTimer(MILISEGUNDOS_RELOJ, timerCallback , NULL);
     SDL_Event evento;
     while (true)
     {
@@ -194,6 +214,9 @@ void ejecutarElLoopPrincipal()
         SDL_WaitEvent(&evento);
         switch(evento.type)
         {
+            case SDL_USEREVENT:
+                tickDelReloj();
+                break;
             case SDL_QUIT:
                 return;
                 break;
