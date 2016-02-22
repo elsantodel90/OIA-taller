@@ -8,7 +8,7 @@ using namespace std;
 
 extern const int RESOLUCION_HORIZONTAL = 800;
 extern const int RESOLUCION_VERTICAL = 500;
-extern const int TAMANIO_TEXTO = 15;
+extern const int TAMANIO_TEXTO = 30;
 extern const string TITULO_PROGRAMA = "OIA-PONG";
 extern const int MILISEGUNDOS_RELOJ = 20;
 
@@ -21,14 +21,25 @@ const int MAX_X = RESOLUCION_HORIZONTAL/2 - 30;
 
 const int ANCHO_PADDLE = 10;
 const int ALTO_PADDLE = 60;
+const Color COLOR_PADDLE = VERDE;
+const int PADDLE_X_SPEED = 4;
+const int PADDLE_Y_SPEED = 3;
+const int IA_PADDLE_SPEED = 2;
 
 const int BALL_RADIUS = 6;
 const Color BALL_COLOR = AMARILLO;
 
-const int BALL_SPEED = 4;
+const int BALL_SPEED = 6;
 
-int playerX[2] = {MIN_X, MIN_X};
-int playerY[2] = {RESOLUCION_VERTICAL/2,RESOLUCION_VERTICAL/2};
+int puntajes[2] = {0,0};
+
+struct Paddle
+{
+    int x,y;
+};
+
+Paddle paddle[2] = {{20, 60},{RESOLUCION_HORIZONTAL - 20 - ANCHO_PADDLE, RESOLUCION_VERTICAL - 60 - ALTO_PADDLE}};
+
 
 void dibujarDivisionCentral()
 {
@@ -55,9 +66,26 @@ void procesarClicEnBoton(int)
     // Aca se escribe el codigo que se ejecuta cuando se hace clic en un boton
 }
 
+void controlarPaddle(Paddle &p, char izquierda, char derecha, char abajo, char arriba, char tecla)
+{
+    tecla = toupper(tecla);
+    if (tecla == izquierda)
+        p.x -= PADDLE_X_SPEED;
+    else if (tecla == derecha)
+        p.x += PADDLE_X_SPEED;
+    else if (tecla == abajo)
+        p.y += PADDLE_Y_SPEED;
+    else if (tecla == arriba)
+        p.y -= PADDLE_Y_SPEED;
+}
+
 void procesarPulsacionDeTecla(char tecla)
 {
-    // Aca se escribe el codigo que se ejecuta cuando se pulsa una tecla.
+    Paddle paddleOriginal = paddle[0];
+    controlarPaddle(paddle[0], 'A', 'D', 'S', 'W', tecla);
+    if (paddle[0].x > RESOLUCION_HORIZONTAL / 2 - 10 ||
+        paddle[0].x < ANCHO_PADDLE)
+        paddle[0] = paddleOriginal;
 }
 
 void procesarClic(int, int)
@@ -65,20 +93,89 @@ void procesarClic(int, int)
     // Aca se escribe el codigo que se ejecuta cuando se hace un clic en (X,Y)
 }
 
-int ballX = 150;
-int ballY = 150;
-int ballVX = BALL_SPEED;
-int ballVY = BALL_SPEED;
+struct Pelota
+{
+    int x,y,vx,vy;
+    
+    // Devuelve True si hubo un rebote en el fondo.
+    bool avanzar(int valorDelPunto)
+    {
+        if (y >= RESOLUCION_VERTICAL - BALL_RADIUS || y <= BALL_RADIUS)
+            vy = -vy;
+        bool rebote = false;
+        if (x >= RESOLUCION_HORIZONTAL - BALL_RADIUS)
+        {
+            rebote = true;
+            puntajes[0] += valorDelPunto;
+            vx = -vx;
+        }
+        else if (x <= BALL_RADIUS)
+        {
+            rebote = true;
+            puntajes[1] += valorDelPunto;
+            vx = -vx;
+        }
+        x += vx;
+        y += vy;
+        return rebote;
+    }
+};
+
+Pelota pelota = {150, 150, BALL_SPEED, BALL_SPEED};
+
+void dibujarPaddle(Paddle p)
+{
+    dibujarRectangulo(p.x - ANCHO_PADDLE/2, p.y-ALTO_PADDLE/2, p.x + ANCHO_PADDLE/2, p.y + ALTO_PADDLE/2, COLOR_PADDLE);
+}
+
+bool colisiona(Paddle p)
+{
+    return abs(p.x - pelota.x) <= BALL_RADIUS + ANCHO_PADDLE / 2 &&
+           abs(p.y - pelota.y) <= BALL_RADIUS + ALTO_PADDLE / 2;
+}
+
+int signo(int x)
+{
+    return (x>0) - (x<0);
+}
+
+int calcularPosicionY(int x)
+{
+    Pelota copiaPelota = pelota;
+    int s = signo(x - copiaPelota.x);
+    while (signo(x - copiaPelota.x) == s)
+        copiaPelota.avanzar(0);
+    return copiaPelota.y;
+}
+
+void movimientoIA(Paddle &p)
+{
+    int posicionEsperadaPelota = calcularPosicionY(p.x);
+    if (posicionEsperadaPelota > p.y + 3)
+        p.y += IA_PADDLE_SPEED;
+    else if (posicionEsperadaPelota < p.y - 3)
+        p.y -= IA_PADDLE_SPEED;
+}
+
+bool cruzoCancha = true;
+int cancha = 0;
 
 void tickDelReloj()
 {
-    dibujarCirculo(ballX, ballY, BALL_RADIUS , NEGRO);
-    if (ballY >= RESOLUCION_VERTICAL - BALL_RADIUS || ballY <= BALL_RADIUS)
-        ballVY = -ballVY;
-    if (ballX >= RESOLUCION_HORIZONTAL - BALL_RADIUS || ballX <= BALL_RADIUS)
-        ballVX = -ballVX;
-    ballX += ballVX;
-    ballY += ballVY;
+    movimientoIA(paddle[1]);
+    dibujarRectangulo(0, 0, RESOLUCION_HORIZONTAL, RESOLUCION_VERTICAL , NEGRO);
+    if (cancha != signo(pelota.x - RESOLUCION_HORIZONTAL/2))
+            cruzoCancha = true;
+    if (cruzoCancha && (colisiona(paddle[0]) || colisiona(paddle[1])))
+    {
+        pelota.vx = -pelota.vx;
+        cruzoCancha = false;
+        cancha = signo(pelota.x - RESOLUCION_HORIZONTAL/2);
+    }
+    if (pelota.avanzar(1)) cruzoCancha = true;
     dibujarDivisionCentral();
-    dibujarCirculo(ballX, ballY, BALL_RADIUS , BALL_COLOR);
+    dibujarCirculo(pelota.x, pelota.y, BALL_RADIUS , BALL_COLOR);
+    for (int i=0; i < 2; i++) dibujarPaddle(paddle[i]);
+    escribirTexto(0,RESOLUCION_VERTICAL - 40, to_string(puntajes[0]), ROJO);
+    escribirTexto(RESOLUCION_HORIZONTAL - 50,RESOLUCION_VERTICAL - 40, to_string(puntajes[1]), ROJO);
 }
