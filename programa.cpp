@@ -10,6 +10,7 @@ extern const int RESOLUCION_HORIZONTAL = 500;
 extern const int RESOLUCION_VERTICAL = 500;
 extern const int TAMANIO_TEXTO = 12;
 extern const string TITULO_PROGRAMA = "Programa OIA";
+extern const int MILISEGUNDOS_RELOJ = 1000;
 
 void ejecutarAlIniciarElPrograma()
 {
@@ -37,4 +38,9 @@ void procesarPulsacionDeTecla(char tecla)
 void procesarClic(int X, int Y)
 {
     // Aca se escribe el codigo que se ejecuta cuando se hace un clic en (X,Y)
+}
+
+void tickDelReloj()
+{
+    // Aca se escribe el codigo que se ejecuta periodicamente cada MILISEGUNDOS_RELOJ milisegundos.
 }
